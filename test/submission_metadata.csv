@@ -1,0 +1,10 @@
+First Name,Last Name,Student ID,Email,Sections,Status,Submission ID,Total Score,Max Points,Question 1 Score,Question 1 Weight,Question 1 Graded?,Question 1 Response,Question 1 Submitted At
+Shahzeb,Imran,"",email,"Shahzeb",Ungraded,273560621,0.0,15.0,,15.0,false,"{""0""=>[{""text_file_id""=>674791352}], ""1""=>[{""text_file_id""=>674791353}, {""text_file_id""=>674792317}]}",2024-10-02 01:02:29 -0700
+Shahzeb,Imran1,12341235,email,"Shahzeb",Ungraded,273560621,0.0,15.0,,15.0,false,"{""0""=>[{""text_file_id""=>674791352}], ""1""=>[{""text_file_id""=>674791353}, {""text_file_id""=>674792317}]}",2024-10-02 01:02:29 -0700
+A,Nother Student,"",email,"Shahzeb",Ungraded,123456,0.0,15.0,,15.0,false,"{""0""=>[{""text_file_id""=>674791352}], ""1""=>[{""text_file_id""=>674791353}, {""text_file_id""=>674792317}]}",2024-10-02 01:02:29 -0700
+Blad,Blah,3412341,email,"Shahzeb",Ungraded,123456,0.0,15.0,,15.0,false,"{""0""=>[{""text_file_id""=>674791352}], ""1""=>[{""text_file_id""=>674791353}, {""text_file_id""=>674792317}]}",2024-10-02 01:02:29 -0700
+Student,One,,,"Shahzeb",Ungraded,1,0.0,15.0,,15.0,false,"{""0""=>[{""text_file_id""=>674791352}], ""1""=>[{""text_file_id""=>674791353}, {""text_file_id""=>674792317}]}",2024-10-02 01:02:29 -0700
+Student,Two,,,"Shahzeb",Ungraded,2,0.0,15.0,,15.0,false,"{""0""=>[{""text_file_id""=>674791352}], ""1""=>[{""text_file_id""=>674791353}, {""text_file_id""=>674792317}]}",2024-10-02 01:02:29 -0700
+Student,Three,,,"Shahzeb",Ungraded,3,0.0,15.0,,15.0,false,"{""0""=>[{""text_file_id""=>674791352}], ""1""=>[{""text_file_id""=>674791353}, {""text_file_id""=>674792317}]}",2024-10-02 01:02:29 -0700
+Student,Four,,,"Shahzeb",Ungraded,4,0.0,15.0,,15.0,false,"{""0""=>[{""text_file_id""=>674791352}], ""1""=>[{""text_file_id""=>674791353}, {""text_file_id""=>674792317}]}",2024-10-02 01:02:29 -0700
+Student,Five,,,"Shahzeb",Ungraded,5,0.0,15.0,,15.0,false,"{""0""=>[{""text_file_id""=>674791352}], ""1""=>[{""text_file_id""=>674791353}, {""text_file_id""=>674792317}]}",2024-10-02 01:02:29 -0700
