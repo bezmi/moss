@@ -1,0 +1,4 @@
+pyvis
+bs4
+matplotlib
+lxml
