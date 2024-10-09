@@ -9,7 +9,7 @@
 # It will also output 'submissions_sorted.csv', which is a file that contains details about
 # the submissions, such as whether they were overdue and by how many hours.
 #
-# set USERID to a valid MOSS user id.
+# set USERID here to a valid MOSS user id, or use the MOSS_USERID environment variable.
 # to generate one, send an email to:
 #     moss@moss.stanford.edu
 # where the body of the message is exactly:
@@ -18,19 +18,45 @@
 # where username@domain is your email address
 # you will shortly receive an email to that address with a bash script in the body
 # search for "userid" in this email. Input the value here.
-USERID="12345678"
 
+# If the MOSS_USERID environment variable is not set, then script will error out
+USERID=${MOSS_USERID:-""}
+
+if [ -z "$USERID" ]; then
+  echo "USERID not valid. Please set it in check_similarity.sh, or use the MOSS_USERID environment variable."
+  echo ""
+  echo "usage: check_similarity.sh <due_date>"
+  echo "date format: 'YYYY-MM-DD HH:MM:SS Z', where Z is the UTC timezone such as +1000."
+  exit 1
+fi
+
+if [ "$FORCE" = "TRUE" ]; then
+  echo "FORCE flag is set."
+  FORCE_FLAG="--force"
+fi
 
 # set DUE_DATE to the correct value. OPEN_BROWSER will open the network graph and MOSS report in a
 # browser tab if set to 'TRUE'.
-DUE_DATE="2024-10-26 16:00:00 +1000"
+if [ -z "$1" ]; then
+  echo "Due date is required!"
+  echo ""
+  echo "usage: check_similarity.sh <due_date>"
+  echo "date format: 'YYYY-MM-DD HH:MM:SS Z', where Z is the UTC timezone such as +1000."
+  exit 1
+else
+  DUE_DATE="$1"
+fi
 
 # Change these values as needed.
 MIN_LINES=10
 MIN_SIMILARITY=25
 
-
+# opens the browser automatically to show MOSS report and node graph.
 OPEN_BROWSER="TRUE"
+
+if [ "$OPEN_BROWSER" = "TRUE" ]; then
+  BROWSER_FLAG="--open-browser"
+fi
 
 # the directory within which this script is located.
 # venv will be created here if it does not exist.
@@ -48,14 +74,21 @@ else
   pip install -r ${_SCRIPT_DIR}/requirements.txt
 fi
 
-python3 ${_SCRIPT_DIR}/sort_submissions_gradescope.py -d "${DUE_DATE}"
-if [ $OPEN_BROWSER = "TRUE" ]; then
-  python3 ${_SCRIPT_DIR}/submit_to_moss.py --userid $USERID --open-browser
-  python3 ${_SCRIPT_DIR}/moss_nodes.py --min-similarity $MIN_SIMILARITY --min-lines-matched $MIN_LINES --open-browser
+python3 ${_SCRIPT_DIR}/sort_submissions_gradescope.py -d "$DUE_DATE" $FORCE_FLAG
+
+REPORT_FILE="$(python3 ${_SCRIPT_DIR}/submit_to_moss.py --userid $USERID $BROWSER_FLAG)"
+
+status=$?
+if [ $status -eq 0 ]; then
+  echo MOSS report created successfully at $(echo "${REPORT_FILE}" | tail -n 1).
+  report="--report $(echo "${REPORT_FILE}" | tail -n 1)"
 else
-  python3 ${_SCRIPT_DIR}/submit_to_moss.py --userid $USERID
-  python3 ${_SCRIPT_DIR}/moss_nodes.py --min-similarity $MIN_SIMILARITY --min-lines-matched $MIN_LINES
+  echo "${REPORT_FILE}"
+  echo "Creating MOSS report failed. Exiting."
+  exit 1
 fi
+
+python3 ${_SCRIPT_DIR}/moss_nodes.py $report --min-similarity $MIN_SIMILARITY --min-lines-matched $MIN_LINES $BROWSER_FLAG $FORCE_FLAG
 
 # deactive venv
 deactivate

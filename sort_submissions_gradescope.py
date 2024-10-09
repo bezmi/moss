@@ -7,6 +7,7 @@ import csv
 from dataclasses import dataclass
 import shutil
 import argparse
+import sys
 
 ##################
 ### QUICKSTART ###
@@ -199,10 +200,35 @@ def main():
         help="Glob pattern to match pdf files.",
     )
 
+    parser.add_argument(
+        "-f",
+        "--force",
+        default=False,
+        action="store_true",
+        help="Overwrite output files if they already exist.",
+    )
+
     args = parser.parse_args()
 
     overdue_leniency = timedelta(hours=args.overdue_leniency)
-    print(overdue_leniency)
+
+    if os.path.exists(args.processed_dir_path):
+        if not args.force:
+            print(
+                f"processed files directory {args.processed_dir_path} already exists. Please specify a different location using the --processed-dir-path, or use the --force flag to overwrite."
+            )
+            sys.exit(1)
+        else:
+            shutil.rmtree(args.processed_dir_path, ignore_errors=True)
+
+    if os.path.exists(args.processed_csv_path):
+        if not args.force:
+            print(
+                f"processed csv file {args.processed_csv_path} already exists. Please specify using --processed-csv-path, or use the --force flag to overwrite."
+            )
+            sys.exit(1)
+        else:
+            os.remove(args.processed_csv_path)
 
     process_submissions(
         args.due_date,

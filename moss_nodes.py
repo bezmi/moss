@@ -2,6 +2,7 @@
 
 from bs4 import BeautifulSoup
 from pyvis.network import Network
+import sys
 from matplotlib import colormaps, colors
 import argparse
 import os
@@ -139,6 +140,7 @@ def load_moss_report(file_path):
 
 
 def main():
+    print(sys.argv)
     parser = argparse.ArgumentParser(
         description="Generate a force-directed network graph from MOSS report.",
         formatter_class=argparse.ArgumentDefaultsHelpFormatter,
@@ -195,15 +197,30 @@ def main():
         help="If set, open the generated network in web browser.",
     )
 
+    parser.add_argument(
+        "-f",
+        "--force",
+        default=False,
+        action="store_true",
+        help="Overwrite the output file if it already exists.",
+    )
+
     args = parser.parse_args()
+    print(args)
 
     if args.report is None:
         args.report = "./moss_report/index.html"
 
     if not os.path.isfile(args.report):
-        raise ValueError(
-            f"No MOSS report found at {args.report}. Specify a valid path to index.html using the -r flag."
+        print(
+            f"No MOSS report found at {args.report}. Specify a valid path to index.html using the --report flag."
         )
+        sys.exit(1)
+    if os.path.isfile(args.output) and not args.force:
+        print(
+            f"The file {args.output} already exists. Specify a different output file name using --output, or use the --force flag to overwrite it."
+        )
+        sys.exit(1)
 
     # Load MOSS report and create graph
     html_content = load_moss_report(args.report)
@@ -232,14 +249,3 @@ def main():
 # Entry point for the script
 if __name__ == "__main__":
     main()
-
-# # Example usage:
-# html_content = load_moss_report(report)
-# edges, node_strength = parse_moss_report(html_content)
-# net = create_graph(edges, node_strength)
-#
-# # Save and visualize the network
-# net.show(output)
-#
-# # Open the generated HTML file in your web browser to interact with the graph.
-# print(f"Interactive graph saved to: {output}")
