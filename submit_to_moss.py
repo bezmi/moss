@@ -350,7 +350,7 @@ def main():
         nargs="*",
         type=str,
         default=[],
-        help="List of base files that should be ignored in the comparison.",
+        help="Space separated list of base files that should be ignored in the comparison.",
     )
 
     parser.add_argument("--userid", type=int, required=False, help="User ID for MOSS.")
@@ -479,6 +479,7 @@ def main():
         # eg, if you provided a template.
 
         for file in base_files:
+            print(f"adding base file: {file}")
             m.addBaseFile(file)
 
         # add the concatenated files

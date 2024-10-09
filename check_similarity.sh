@@ -30,7 +30,7 @@ if [ -z "$USERID" ]; then
   exit 1
 fi
 
-if [ "$FORCE" = "TRUE" ]; then
+if [ "${FORCE}" = "TRUE" ]; then
   echo "FORCE flag is set."
   FORCE_FLAG="--force"
 fi
@@ -45,6 +45,10 @@ if [ -z "$1" ]; then
   exit 1
 else
   DUE_DATE="$1"
+fi
+
+if [ ! -z "${BASE_FILES}" ]; then
+  BASE_FILES_FLAG="--base-files ${BASE_FILES}"
 fi
 
 # Change these values as needed.
@@ -74,16 +78,22 @@ else
   pip install -r ${_SCRIPT_DIR}/requirements.txt
 fi
 
-python3 ${_SCRIPT_DIR}/sort_submissions_gradescope.py -d "$DUE_DATE" $FORCE_FLAG
+python3 ${_SCRIPT_DIR}/sort_submissions_gradescope.py -d "${DUE_DATE}" ${FORCE_FLAG}
+status=$?
+if [ $status -ne 0 ]; then
+  echo "Sorting submissions failed. Exiting."
+  exit 1
+fi
 
-REPORT_FILE="$(python3 ${_SCRIPT_DIR}/submit_to_moss.py --userid $USERID $BROWSER_FLAG)"
+REPORT_GEN_OUTPUT="$(python3 ${_SCRIPT_DIR}/submit_to_moss.py --userid ${USERID} ${BROWSER_FLAG} ${BASE_FILES_FLAG})"
 
 status=$?
 if [ $status -eq 0 ]; then
-  echo MOSS report created successfully at $(echo "${REPORT_FILE}" | tail -n 1).
-  report="--report $(echo "${REPORT_FILE}" | tail -n 1)"
+  echo "${REPORT_GEN_OUTPUT}"
+  echo MOSS report created successfully at $(echo "${REPORT_GEN_OUTPUT}" | tail -n 1).
+  report="--report $(echo "${REPORT_GEN_OUTPUT}" | tail -n 1)"
 else
-  echo "${REPORT_FILE}"
+  echo "${REPORT_GEN_OUTPUT}"
   echo "Creating MOSS report failed. Exiting."
   exit 1
 fi
