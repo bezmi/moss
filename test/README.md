@@ -2,4 +2,4 @@ I generated permutations of the test files by giving chatgpt the file and asking
 
 It works reasonably well for testing.
 
-`run_test.sh` to test the `check_similarity.sh` script. Make sure USERID is valid.
+`MOSS_USERID=123456 run_test.sh` to test the `check_similarity.sh` script. Make sure that `MOSS_USERID` is valid.
