@@ -140,7 +140,6 @@ def load_moss_report(file_path):
 
 
 def main():
-    print(sys.argv)
     parser = argparse.ArgumentParser(
         description="Generate a force-directed network graph from MOSS report.",
         formatter_class=argparse.ArgumentDefaultsHelpFormatter,
@@ -206,7 +205,6 @@ def main():
     )
 
     args = parser.parse_args()
-    print(args)
 
     if args.report is None:
         args.report = "./moss_report/index.html"
