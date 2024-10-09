@@ -10,9 +10,9 @@ This code enables sending code submitted with this assignment type to [MOSS](htt
 4. Get a moss userid by [following the instructions on their website](https://theory.stanford.edu/~aiken/moss/).
 5. From within the submission directory, run `MOSS_USERID=123456 wherever-you-cloned-this-repo/moss/check_similarity.sh "YYYY-MM-DD z"`,
 where we have supplied the `MOSS_USERID` environment variable and the due date as an argument, with `z` as the UTC timezone such as +1000.
-   - If you get an error about the file existing, then you can use `FORCE=TRUE` before the `MOSS_USERID` part to force overwrite any existing files.
    - This will install a python venv into the repo directory with the relevant dependencies and then sort the submissions, send them to moss, download the report and generate a directed node graph.
    - It will also output a `submissions_processed.csv`, which contains relevant information, most importantly the locations of any submitted PDFs and code files and the hours overdue if applicable, useful for sending the pdf to other similarity checkers or applying overdue penalties.
+   - If you get an error about files already existing, then you can use `FORCE=TRUE MOSS_USERID=...` when running the command to force overwrite.
 4. To clean the submissions directory, remove `./sorted`, `./lib/`, `./moss_report`, `./moss_network.html` and `./submissions_processed.csv`
 
 # Detailed Usage
